@@ -12,5 +12,13 @@ Get - takes roll number and Updates the data boxes with data from 'db.json'   !!
 
 
 ## Screenshots
+---
+expected
+---
+![image1_1](/screenshots/1_a.png)  ![image1_d](/screenshots/1_d.png)
 
-<img>
+
+errors
+---
+![error](/screenshots/error.png)
+
