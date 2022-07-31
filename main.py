@@ -1,9 +1,8 @@
 import PySimpleGUI as sg
 import json
+
+
 subjects = ["english","physics", "chemistry", "maths", "phe", "computer", "painting" ]
-
-
-
 
 
 layout = [
@@ -29,29 +28,30 @@ def Save(values:list):
     
     english = values['english']
     physics = values['physics']
-    chemstry = values['chemistry']
+    chemistry = values['chemistry']
     maths = values['maths']
     phe = values['phe']
     computer = values['computer']
     painting = values['painting']
 
-    with open('./db.json', 'w')as f:
-        f.write(
-            json.dumps({
-                roll: {
+    with open('./db.json', 'r')as f:
+        db = json.load(f)
+        db[roll]= {
                     "name": name,
                     "marks" : {
                         "english": english,
                         "physics": physics,
-                        "chemistry": chemstry,
+                        "chemistry": chemistry,
                         "maths": maths,
                         "phe": phe,
                         "computer": computer,
                         "painting": painting
                     }
                 }
-            }, indent=4)
-        )
+
+    with open('./db.json', 'w')as f:
+        f.write(json.dumps(db, indent=4) )
+        
         f.close()
 
 def Get(roll):
@@ -68,7 +68,7 @@ def Get(roll):
             window['painting'].update(db[roll]["marks"]["painting"])
         else:
             sg.popup("Entry for given rollnumber does not exist", keep_on_top=True)
-
+        f.close()
 
 while True:
     event, values = window.read()
