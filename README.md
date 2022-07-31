@@ -12,3 +12,5 @@ Get - takes roll number and Updates the data boxes with data from 'db.json'   !!
 
 
 ## Screenshots
+
+<img>
