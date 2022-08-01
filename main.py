@@ -1,24 +1,44 @@
 import PySimpleGUI as sg
 import json
 
+try:
+    file = open('./db.json', 'r')
+
+except FileNotFoundError:
+    file = open('./db.json','w')
+    file.write(
+        json.dumps( {
+            "test": "pass"
+        }, indent=4)
+    )
+    file.close()
+file.close()
 
 subjects = ["english","physics", "chemistry", "maths", "phe", "computer", "painting" ]
 
 
-layout = [
+left_lay = [
     [sg.Text( "Enter Roll Number " ,size=(14,1 )), sg.Input(size=(5,1),key="roll") ],
     [sg.Text('Enter Name', size=(14,1) ),sg.Input(size=(14,1), key="name")],
     [sg.HSeparator()],
     [sg.Text("Marks", size=(5,1))]
 ]
 for i in subjects:
-    layout += [[sg.Text(i, size=(10,1)), sg.Input(size=(6,1), key=i ) ]]
-layout += [
+    left_lay += [[sg.Text(i, size=(10,1)), sg.Input(size=(6,1), key=i ) ]]
+left_lay += [
     [sg.HSeparator()],
     [sg.Button("Save"), sg.Button("Get"), sg.Button("Exit")]
 ]
+right_lay = [
+    [sg.Text("Help")], [sg.HSeparator()],
+    [sg.Text("Save -> ", text_color="Black" ), sg.Text("updated data entered in the fields to the db.json file ") ] , [sg.HSeparator()],
+    [sg.Text("Get - >", text_color="Black" ), sg.Text("Gets data for the roll number provided in the roll number field\n!!ANY UNSAVED DATA IN THE FIELDS WILL NOT BE SAVED!! ") ],
+    [sg.HSeparator()],
+    [sg.Text(" " )]
+]
 
-
+layout = [
+    [sg.Column(left_lay), sg.VSeparator(), sg.Column(right_lay) ]]
 window = sg.Window(title="Student data manager" ,layout=layout)
 
 
@@ -52,7 +72,7 @@ def Save(values:list):
     with open('./db.json', 'w')as f:
         f.write(json.dumps(db, indent=4) )
         
-        f.close()
+        
 
 def Get(roll):
     with open('./db.json', 'r')as f:
@@ -68,7 +88,6 @@ def Get(roll):
             window['painting'].update(db[roll]["marks"]["painting"])
         else:
             sg.popup("Entry for given rollnumber does not exist", keep_on_top=True)
-        f.close()
 
 while True:
     event, values = window.read()

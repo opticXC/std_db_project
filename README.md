@@ -3,7 +3,7 @@
 a simple Student Database manager made in python with PySimpleGui
 --
 ## notice
-You need to create a 'db.json' file in the working directory first 
+Will not be updated any further 
 
 ---
 ## functions 
