@@ -18,8 +18,10 @@ subjects = ["english","physics", "chemistry", "maths", "phe", "computer", "paint
 
 
 left_lay = [
-    [sg.Text( "Enter Roll Number " ,size=(14,1 )), sg.Input(size=(5,1),key="roll") ],
-    [sg.Text('Enter Name', size=(14,1) ),sg.Input(size=(14,1), key="name")],
+    [sg.Text( "Student registration Number " ,size=(20,1 )), sg.Input(size=(5,1),key="registration") ],
+    [sg.Text('Student Name', size=(14,1) ),sg.Input(size=(14,1), key="name")],
+    [sg.Text("Student contact number", size=(18,1)), sg.Input(size=(11,1), key="number" ) ],
+    [sg.Text('Student Email', size=(13,1)), sg.Input(size=(20,1), key="email") ],
     [sg.HSeparator()],
     [sg.Text("Marks", size=(5,1))]
 ]
@@ -31,8 +33,8 @@ left_lay += [
 ]
 right_lay = [
     [sg.Text("Help")], [sg.HSeparator()],
-    [sg.Text("Save -> ", text_color="Black" ), sg.Text("updated data entered in the fields to the db.json file ") ] , [sg.HSeparator()],
-    [sg.Text("Get - >", text_color="Black" ), sg.Text("Gets data for the roll number provided in the roll number field\n!!ANY UNSAVED DATA IN THE FIELDS WILL NOT BE SAVED!! ") ],
+    [sg.Text("Save -> ", text_color="Black" ), sg.Text("updated data entered in the\nfields to the db.json file ") ] , [sg.HSeparator()],
+    [sg.Text("Get - >", text_color="Black" ), sg.Text("Gets data for the registration\nnumber provided in the registration number field\n!!ANY UNSAVED DATA IN THE FIELDS WILL NOT BE SAVED!! ") ],
     [sg.HSeparator()],
     [sg.Text(" " )]
 ]
@@ -43,9 +45,10 @@ window = sg.Window(title="Student data manager" ,layout=layout)
 
 
 def Save(values:list):
-    roll = values['roll']
+    registration = values['registration']
     name = values['name']
-    
+    number = values['number']
+    email = values['email']
     english = values['english']
     physics = values['physics']
     chemistry = values['chemistry']
@@ -56,8 +59,10 @@ def Save(values:list):
 
     with open('./db.json', 'r')as f:
         db = json.load(f)
-        db[roll]= {
+        db[registration]= {
                     "name": name,
+                    "number": number,
+                    "email": email,
                     "marks" : {
                         "english": english,
                         "physics": physics,
@@ -74,20 +79,22 @@ def Save(values:list):
         
         
 
-def Get(roll):
+def Get(registration):
     with open('./db.json', 'r')as f:
         db = json.load(f)
-        if roll in db:
-            window['name'].update(db[roll]["name"] )
-            window['english'].update(db[roll]["marks"]["english"])
-            window['physics'].update(db[roll]["marks"]["physics"])
-            window['chemistry'].update(db[roll]["marks"]["chemistry"])
-            window['maths'].update(db[roll]["marks"]["maths"])
-            window['phe'].update(db[roll]["marks"]["phe"])
-            window['computer'].update(db[roll]["marks"]["computer"])
-            window['painting'].update(db[roll]["marks"]["painting"])
+        if registration in db:
+            window['name'].update(db[registration]["name"] )
+            window['number'].update(db[registration]["number"])
+            window['email'].update(db[registration]["email"] )
+            window['english'].update(db[registration]["marks"]["english"])
+            window['physics'].update(db[registration]["marks"]["physics"])
+            window['chemistry'].update(db[registration]["marks"]["chemistry"])
+            window['maths'].update(db[registration]["marks"]["maths"])
+            window['phe'].update(db[registration]["marks"]["phe"])
+            window['computer'].update(db[registration]["marks"]["computer"])
+            window['painting'].update(db[registration]["marks"]["painting"])
         else:
-            sg.popup("Entry for given rollnumber does not exist", keep_on_top=True)
+            sg.popup("Entry for given registrationnumber does not exist", keep_on_top=True)
 
 while True:
     event, values = window.read()
@@ -96,6 +103,6 @@ while True:
     if event == "Save":
         Save(values)
     if event == "Get":
-        Get(values['roll'])
+        Get(values['registration'])
 
 window.close()
