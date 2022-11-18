@@ -6,13 +6,9 @@ try:
 
 except FileNotFoundError:
     file = open('./db.json','w')
-    file.write(
-        json.dumps( {
-            "test": "pass"
-        }, indent=4)
-    )
+    file.write( json.dumps( {}, indent=4))
     file.close()
-file.close()
+
 
 subjects = ["english","physics", "chemistry", "maths", "phe", "computer", "painting" ]
 
@@ -94,7 +90,7 @@ def Get(registration):
             window['computer'].update(db[registration]["marks"]["computer"])
             window['painting'].update(db[registration]["marks"]["painting"])
         else:
-            sg.popup("Entry for given registrationnumber does not exist", keep_on_top=True)
+            sg.popup("Entry for given registration number does not exist", keep_on_top=True)
 
 while True:
     event, values = window.read()
